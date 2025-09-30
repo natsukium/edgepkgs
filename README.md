@@ -4,6 +4,8 @@ A Nix package set for bleeding edge software. This repository contains packages 
 
 ## Available Packages
 
+- claude-code [./pkgs/claude-code/default.nix](./pkgs/claude-code/default.nix)
+
 ## Usage
 
 ### Using Overlays
