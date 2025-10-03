@@ -1,0 +1,44 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
+      - name: Check Nix formatting
+        run: nix shell nixpkgs#treefmt nixpkgs#actionlint nixpkgs#nixfmt nixpkgs#shellcheck nixpkgs#shfmt nixpkgs#pinact nixpkgs#tombi --command treefmt --fail-on-change
+
+  check:
+    runs-on: ${{ matrix.os }}
+    needs: format
+    permissions:
+      contents: read
+      actions: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel]
+
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: nixbuild/nix-quick-install-action@2c9db80fb984ceb1bcaa77cdda3fdf8cfba92035 # v34
+      - uses: nix-community/cache-nix-action@135667ec418502fa5a3598af6fb9eb733888ce6a # v6.1.3
+        with:
+          primary-key: nix-${{ matrix.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ matrix.os }}-
+          purge: true
+          purge-prefixes: nix-${{ matrix.os }}-
+          purge-created: 0
+      - name: Run nix flake check
+        env:
+          NIXPKGS_ALLOW_UNFREE: 1
+        run: nix flake check --impure --option keep-going true
