@@ -20,5 +20,7 @@
       packages = forAllSystems (system: import ./. { pkgs = import nixpkgs { inherit system; }; });
 
       overlays.default = import ./overlays;
+
+      checks = self.packages;
     };
 }
