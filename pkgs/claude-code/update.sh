@@ -1,5 +1,5 @@
-#!/usr/bin/env nix-shell
-#!nix-shell -i bash --packages nodejs nix-update git
+#!/usr/bin/env nix
+#!nix shell nixpkgs#bash nixpkgs#nodejs nixpkgs#nix-update nixpkgs#git --command bash
 
 # Derived from nixpkgs: Copyright (c) 2003-2025 Eelco Dolstra and the Nixpkgs/NixOS contributors
 # See COPYING-NIXPKGS for license details.
