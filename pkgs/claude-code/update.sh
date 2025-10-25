@@ -10,7 +10,7 @@ set -euo pipefail
 version=$(npm view @anthropic-ai/claude-code version)
 
 # Update version and hash
-AUTHORIZED=1 NIXPKGS_ALLOW_UNFREE=1 nix-update claude-code --version="$version" --generate-lockfile --print-commit-message
+AUTHORIZED=1 NIXPKGS_ALLOW_UNFREE=1 nix-update --flake claude-code --version="$version" --generate-lockfile --print-commit-message
 
 # Update npmDepsHash
-AUTHORIZED=1 NIXPKGS_ALLOW_UNFREE=1 nix-update claude-code --version=skip
+AUTHORIZED=1 NIXPKGS_ALLOW_UNFREE=1 nix-update --flake claude-code --version=skip
