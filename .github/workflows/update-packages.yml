@@ -39,8 +39,7 @@ jobs:
       - name: Update package
         id: update-package
         run: |
-          cd pkgs/${{ matrix.package }}
-          OUTPUT=$(./update.sh)
+          OUTPUT=$(pkgs/${{ matrix.package }}/update.sh)
 
           # Extract title (first line containing package name)
           COMMIT_TITLE=$(echo "$OUTPUT" | grep -E "^${{ matrix.package }}:" | head -1)
