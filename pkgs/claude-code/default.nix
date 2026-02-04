@@ -1,13 +1,17 @@
 # Derived from nixpkgs: Copyright (c) 2003-2025 Eelco Dolstra and the Nixpkgs/NixOS contributors
 # See COPYING-NIXPKGS for license details.
-# Original: https://github.com/NixOS/nixpkgs/blob/4d256032cc83a2eccc3d366f596a7bf69c87f62d/pkgs/by-name/cl/claude-code/package.nix
+# Original: https://github.com/NixOS/nixpkgs/blob/ddc4f91790e958996696f0e0c4c7a688af98da2f/pkgs/by-name/cl/claude-code/package.nix
 
 {
   lib,
+  stdenv,
   buildNpmPackage,
   fetchzip,
   writableTmpDirAsHomeHook,
   versionCheckHook,
+  bubblewrap,
+  procps,
+  socat,
 }:
 buildNpmPackage (finalAttrs: {
   pname = "claude-code";
@@ -20,8 +24,14 @@ buildNpmPackage (finalAttrs: {
 
   npmDepsHash = "sha256-9gOl2tOTPEfRBX1Hy3f0LSMND6v4Z81AKFmgR/p0Us8=";
 
+  strictDeps = true;
+
   postPatch = ''
     cp ${./package-lock.json} package-lock.json
+
+    # https://github.com/anthropics/claude-code/issues/15195
+    substituteInPlace cli.js \
+          --replace-fail '#!/bin/sh' '#!/usr/bin/env sh'
   '';
 
   dontNpmBuild = true;
@@ -34,7 +44,21 @@ buildNpmPackage (finalAttrs: {
   postInstall = ''
     wrapProgram $out/bin/claude \
       --set DISABLE_AUTOUPDATER 1 \
-      --unset DEV
+      --set DISABLE_INSTALLATION_CHECKS 1 \
+      --unset DEV \
+      --prefix PATH : ${
+        lib.makeBinPath (
+          [
+            # claude-code uses [node-tree-kill](https://github.com/pkrumins/node-tree-kill) which requires procps's pgrep(darwin) or ps(linux)
+            procps
+          ]
+          # the following packages are required for the sandbox to work (Linux only)
+          ++ lib.optionals stdenv.hostPlatform.isLinux [
+            bubblewrap
+            socat
+          ]
+        )
+      }
   '';
 
   doInstallCheck = true;
@@ -43,7 +67,6 @@ buildNpmPackage (finalAttrs: {
     versionCheckHook
   ];
   versionCheckKeepEnvironment = [ "HOME" ];
-  versionCheckProgramArg = "--version";
 
   passthru.updateScript = ./update.sh;
 
