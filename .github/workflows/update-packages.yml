@@ -13,6 +13,7 @@ jobs:
       matrix:
         package:
           - claude-code
+          - claude-code-bin
     steps:
       - name: Generate GitHub App token
         id: app-token
