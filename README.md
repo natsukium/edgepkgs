@@ -6,6 +6,7 @@ A Nix package set for bleeding edge software. This repository contains packages 
 
 - claude-code [./pkgs/claude-code/default.nix](./pkgs/claude-code/default.nix)
 - claude-code-bin [./pkgs/claude-code-bin/default.nix](./pkgs/claude-code-bin/default.nix)
+- github-copilot-cli [./pkgs/github-copilot-cli/default.nix](./pkgs/github-copilot-cli/default.nix)
 
 ## Usage
 
