@@ -1,16 +1,20 @@
 #!/usr/bin/env nix
-#!nix shell nixpkgs#bash nixpkgs#nodejs nixpkgs#nix-update nixpkgs#git --command bash
+#!nix shell --ignore-environment nixpkgs#cacert nixpkgs#curl nixpkgs#bash nixpkgs#gnused --command bash
 
 # Derived from nixpkgs: Copyright (c) 2003-2025 Eelco Dolstra and the Nixpkgs/NixOS contributors
 # See COPYING-NIXPKGS for license details.
-# Original: https://github.com/NixOS/nixpkgs/blob/4d256032cc83a2eccc3d366f596a7bf69c87f62d/pkgs/by-name/cl/claude-code/update.sh
+# Original: https://github.com/NixOS/nixpkgs/blob/710be23bf524d4a0810c07cc087b1438bba65561/pkgs/by-name/cl/claude-code-bin/update.sh
+# Adapted: renamed from claude-code-bin to claude-code
 
 set -euo pipefail
 
-version=$(npm view @anthropic-ai/claude-code version)
+BASE_URL="https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases"
 
-# Update version and hash
-AUTHORIZED=1 NIXPKGS_ALLOW_UNFREE=1 nix-update --flake claude-code --version="$version" --generate-lockfile --print-commit-message
+OLD_VERSION=$(sed -n 's/.*"version": *"\([^"]*\)".*/\1/p' pkgs/claude-code/manifest.json)
 
-# Update npmDepsHash
-AUTHORIZED=1 NIXPKGS_ALLOW_UNFREE=1 nix-update --flake claude-code --version=skip
+VERSION=$(curl -fsSL "$BASE_URL/latest")
+
+curl -fsSL "$BASE_URL/$VERSION/manifest.json" --output pkgs/claude-code/manifest.json
+
+echo "claude-code: $OLD_VERSION -> $VERSION"
+echo "Changelog: https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md"

@@ -13,7 +13,6 @@ jobs:
       matrix:
         package:
           - claude-code
-          - claude-code-bin
           - github-copilot-cli
     steps:
       - name: Generate GitHub App token
