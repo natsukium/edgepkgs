@@ -2,7 +2,7 @@
   description = "edgepkgs: bleeding edge package set for nix";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?refs=nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixpkgs-unstable";
   };
 
   outputs =
@@ -12,7 +12,6 @@
       forAllSystems = lib.genAttrs [
         "aarch64-darwin"
         "aarch64-linux"
-        "x86_64-darwin"
         "x86_64-linux"
       ];
     in
