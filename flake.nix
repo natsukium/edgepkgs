@@ -2,7 +2,7 @@
   description = "edgepkgs: bleeding edge package set for nix";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?refs=nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixpkgs-unstable";
   };
 
   outputs =
