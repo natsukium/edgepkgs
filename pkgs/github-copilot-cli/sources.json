@@ -1,19 +1,19 @@
 {
-  "version": "1.0.111",
+  "version": "1.0.112",
   "x86_64-linux": {
     "name": "copilot-linux-x64",
-    "hash": "sha256-M+pDeMzIKbwYUgZIrZfI+x2d5LpHjr/46yrYkKoKlcg="
+    "hash": "sha256-3+flms8E8Lf1mwJOqdsQGpJGUD6b9xUutmj7sqRpsVE="
   },
   "aarch64-linux": {
     "name": "copilot-linux-arm64",
-    "hash": "sha256-ID/6ywHUA4PTRCf6x1d+t8hH13zYi0Wyx6tWDgRNlhM="
+    "hash": "sha256-SR0YMDUFk1Z13CCYfvDF866Jn4HmbFPVZ62XqLA+UE4="
   },
   "x86_64-darwin": {
     "name": "copilot-darwin-x64",
-    "hash": "sha256-QwY9qLhn3iDJIOGVIe7RhAHNLmfZTItI7Jozh+kXXu8="
+    "hash": "sha256-/aS2ZhJpWJsVRHycbr3paTmkzTLQjWWVqdrW6S0eg/U="
   },
   "aarch64-darwin": {
     "name": "copilot-darwin-arm64",
-    "hash": "sha256-OYtJ6+r6ZyMRUTR3lOB8RmWg7JBHCGRcpJkskXVlqQE="
+    "hash": "sha256-SkpqpiTc63aiPhpT+19k6HoLtaIWGlAX4O33jXCCzmg="
   }
 }
